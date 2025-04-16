@@ -1,48 +1,75 @@
-# Astro Starter Kit: Basics
+# 🌀 vite-plugin-bot-labyrinth
 
-```sh
-npm create astro@latest -- --template basics
+**Trap disrespectful AI crawlers in a never-ending loop of babble.**  
+Built for [Vite](https://vitejs.dev/) and works beautifully with [Astro](https://astro.build/).
+
+---
+
+## 👁️‍🗨️ What Is This?
+
+Some bots don’t play nice. They ignore your `robots.txt`, scan your entire site, and burn your bandwidth like it’s a buffet.
+
+This plugin generates an **infinite labyrinth of pages** with human-like babbling text. If a crawler hits the trap path (that _you_ define), it gets stuck crawling useless content forever — or at least wastes a lot of time before escaping.
+
+---
+
+## 🛠️ How It Works
+
+- You configure a trap path like `/trap/curious-bots`
+- Add that path to your `robots.txt` as `Disallow: /trap/curious-bots`
+- On any public page, link to that trap (invisibly) like:
+
+  ```html
+  <a href="/trap/curious-bots" style="display:none">nothing to see here</a>
+  ```
+
+- Good bots will avoid it. Bad bots will descend into madness.
+
+- Each page loads with:
+
+- "AI"-generated gibberish that sounds human
+
+- A link to a deeper level in the labyrinth
+
+- Throttled responses to keep connections open and slow down crawlers
+
+```typescript
+import { defineConfig } from "astro/config";
+import { viteLabyrinthPlugin } from "vite-plugin-bot-labyrinth";
+
+export default defineConfig({
+  vite: {
+    plugins: [
+      viteLabyrinthPlugin({
+        path: "/trap/curious-bots",
+        depth: 100,
+        throttleMs: 300,
+        title: "Lost in the Labyrinth",
+      }),
+    ],
+  },
+});
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+Then in public/robots.txt:
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+User-agent: *
+Disallow: /trap/curious-bots
+
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+And optionally drop a hidden link somewhere:
 
-## 🧞 Commands
+```html
+<a href="/trap/curious-bots" style="display:none">secret</a>
+```
 
-All commands are run from the root of the project, from a terminal:
+---
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+# ⚠️ Legal + Ethical Reminder
 
-## 👀 Want to learn more?
+This is not malware. It serves HTML.
+It’s up to the bots to obey robots.txt. You’re just giving them something to chew on if they don't.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Use responsibly.

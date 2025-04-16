@@ -30,6 +30,7 @@ export class Babbler {
       (t) => `Okay but… ${t}. Hear me out.`,
       (t) => `Real talk: ${t}.`,
       (t) => `Like, ${t}, and now I can't unsee it.`,
+      (t) => `I can't be the only one who thinks ${t}.`,
 
       // 🔥 New templates
       (t) => `I'm not saying ${t}, but I'm also not *not* saying it.`,
@@ -43,6 +44,8 @@ export class Babbler {
       (t) => `Dead serious, ${t} lives rent-free in my brain.`,
       (t) => `Can't tell if ${t} is genius or just caffeine talking.`,
       (t) => `The fact that ${t} is real should terrify you.`,
+      (t) => `I can't believe ${t} isn't a trending hashtag yet.`,
+      (t) => `If ${t} was a meme, it would be the one with the guy sweating.`,
     ];
 
     this.thoughts = [
@@ -60,6 +63,8 @@ export class Babbler {
       "the cloud is just someone else's computer",
       "the only constant is change, except in legacy code",
       "the best part of coding is the memes",
+      "the only thing scarier than bugs is the documentation",
+      "the real reason we use Git is to avoid talking to people",
     ];
   }
 
@@ -102,9 +107,3 @@ export class Babbler {
     return output.join("\n\n");
   }
 }
-
-// Example usage:
-const babbler = new Babbler();
-console.log(babbler.babble(2));
-console.log(babbler.babble(3));
-console.log(babbler.babble(1));

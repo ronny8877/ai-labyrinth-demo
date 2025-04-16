@@ -152,7 +152,7 @@ export function viteLabyrinthPlugin(config: LabyrinthPluginOptions): Plugin {
   const throttle = config.throttleMs ?? 200;
 
   return {
-    name: "vite-labyrinth-trap",
+    name: "vite-labyrinth",
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         if (!req.originalUrl?.startsWith(basePath)) return next();
@@ -163,16 +163,15 @@ export function viteLabyrinthPlugin(config: LabyrinthPluginOptions): Plugin {
           .replace(/^\/+/, "")
           .split("/");
 
-        console.log("Path parts:", pathParts);
-
-        const currentLevel: number = parseInt(pathParts[pathParts.length-1]) || 0;
+        const currentLevel: number =
+          parseInt(pathParts[pathParts.length - 1]) || 0;
 
         if (currentLevel >= depth) {
-            res.writeHead(200, { "Content-Type": "text/plain" });
-            res.end("🌀 The labyrinth ends here.");
-            return;
-          }
-          
+          res.writeHead(200, { "Content-Type": "text/plain" });
+          res.end("🌀 The labyrinth ends here.");
+          return;
+        }
+
         res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
         // Generate links for this level
         const linkCount: number = 3 + Math.floor(Math.random() * 8); // 3-8 links
@@ -226,6 +225,32 @@ https://cdn.jsdelivr.net/npm/react@19.1.0/jsx-runtime.min.js
       window.lab.track(${currentLevel});
     });
   </script>
+            <style>
+              body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #f4f4f4;
+                color: #333;
+                line-height: 1.6;
+              }
+              .${generateCssClass()} {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+              }
+              .${generateCssClass()} {
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+              }
+                .${generateCssClass()} {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                background-color: #3a7bd5;
+                color: #fff;
+        }
+                </style>
             </head>
             <body>`);
 
@@ -249,7 +274,7 @@ https://cdn.jsdelivr.net/npm/react@19.1.0/jsx-runtime.min.js
         for (let i: number = 0; i < 3; i++) {
           const paragraphClass: string = generateCssClass();
           push(
-            `<p class="${paragraphClass}">${babbler.babble( 2 + Math.ceil(Math.random() * 8))}</p>`,
+            `<p class="${paragraphClass}">${babbler.babble(2 + Math.ceil(Math.random() * 8))}</p>`,
           );
           await sleep(throttle);
         }
