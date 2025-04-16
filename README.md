@@ -1,4 +1,4 @@
-# 🌀 vite-plugin-bot-labyrinth
+# 🌀 vite-labyrinth
 
 **Trap disrespectful AI crawlers in a never-ending loop of babble.**  
 Built for [Vite](https://vitejs.dev/) and works beautifully with [Astro](https://astro.build/).

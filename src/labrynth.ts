@@ -153,6 +153,7 @@ export function viteLabyrinthPlugin(config: LabyrinthPluginOptions): Plugin {
 
   return {
     name: "vite-labyrinth",
+    
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         if (!req.originalUrl?.startsWith(basePath)) return next();
@@ -190,7 +191,13 @@ export function viteLabyrinthPlugin(config: LabyrinthPluginOptions): Plugin {
 
         const push = (text: string) => res.write(text);
         const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
+        
+        const mainContainerClass: string = generateCssClass();
+        const headerClass: string = generateCssClass();
+        const contentClass: string = generateCssClass();
+        const navClass: string = generateCssClass();
+        const listClass: string = generateCssClass();
+        const listItemClass: string = generateCssClass();
         push(`<!DOCTYPE html>
             <html>
             <head>
@@ -225,41 +232,187 @@ https://cdn.jsdelivr.net/npm/react@19.1.0/jsx-runtime.min.js
       window.lab.track(${currentLevel});
     });
   </script>
-            <style>
+                       <style>
+              :root {
+                --primary-color: #3a7bd5;
+                --primary-dark: #2c5ea0;
+                --secondary-color: #00b4d8;
+                --accent-color: #f72585;
+                --text-color: #333;
+                --text-light: #666;
+                --bg-color: #f4f4f4;
+                --card-bg: #ffffff;
+                --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                --border-radius: 8px;
+                --transition: all 0.3s ease;
+              }
+              
+              * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+              }
+
               body {
                 font-family: 'Roboto', sans-serif;
-                background-color: #f4f4f4;
-                color: #333;
+                background-color: var(--bg-color);
+                color: var(--text-color);
                 line-height: 1.6;
+                padding: 2rem 0.5rem;
+                font-size: 16px;
               }
-              .${generateCssClass()} {
+
+              h1, h2, h3 {
+                font-weight: 700;
+                margin-bottom: 1rem;
+                color: var(--primary-dark);
+                line-height: 1.2;
+              }
+
+              h1 {
+                text-align: center;
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+              }
+              
+              h2 {
+                font-size: 1.8rem;
+                border-bottom: 2px solid var(--primary-color);
+                padding-bottom: 0.5rem;
+                margin-top: 1.5rem;
+              }
+
+              p {
+                margin-bottom: 1.5rem;
+                color: var(--text-light);
+              }
+            
+              a {
+                color: var(--primary-color);
+                text-decoration: none;
+                transition: var(--transition);
+                font-weight: 500;
+                position: relative;
+              }
+              
+              a:hover {
+                color: var(--primary-dark);
+                text-decoration: underline;
+              }
+              
+              .${mainContainerClass} {
                 max-width: 800px;
                 margin: 0 auto;
-                padding: 20px;
+                padding: 2rem;
+                background: var(--card-bg);
+                border-radius: var(--border-radius);
+                box-shadow: var(--shadow);
               }
-              .${generateCssClass()} {
-                background-color: #fff;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+              
+              .${headerClass} {
+                margin-bottom: 2rem;
+                padding: 1.5rem 2rem;
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                color: white;
+                border-radius: var(--border-radius);
+                position: relative;
+                overflow: hidden;
               }
-                .${generateCssClass()} {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 20px;
-                background-color: #3a7bd5;
-                color: #fff;
-        }
-                </style>
+              
+              .${headerClass}::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: repeating-linear-gradient(
+                  45deg,
+                  rgba(255, 255, 255, 0.05),
+                  rgba(255, 255, 255, 0.05) 10px,
+                  rgba(255, 255, 255, 0) 10px,
+                  rgba(255, 255, 255, 0) 20px
+                );
+              }
+              
+              .${contentClass} {
+                margin-bottom: 2.5rem;
+                line-height: 1.7;
+              }
+              
+              .${navClass} {
+                margin-top: 3rem;
+                padding: 1.5rem;
+                background-color: rgba(58, 123, 213, 0.05);
+                border-radius: var(--border-radius);
+                border-left: 4px solid var(--primary-color);
+              }
+              
+              .${listClass} {
+                list-style-type: none;
+                padding: 0;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                grid-gap: 1rem;
+                margin-top: 1rem;
+              }
+              
+              .${listItemClass} {
+                margin-bottom: 0.75rem;
+                transition: var(--transition);
+              }
+              
+              .${listItemClass} a {
+                display: block;
+                padding: 0.75rem 1rem;
+                background-color: rgba(58, 123, 213, 0.1);
+                border-radius: var(--border-radius);
+                transition: var(--transition);
+              }
+              
+              .${listItemClass} a:hover {
+                background-color: rgba(58, 123, 213, 0.2);
+                transform: translateY(-2px);
+                box-shadow: var(--shadow);
+                text-decoration: none;
+              }
+              
+              @media (max-width: 768px) {
+                body {
+                  padding: 1rem 0.5rem;
+                }
+                
+                .${mainContainerClass} {
+                  padding: 1.5rem;
+                }
+                
+                .${headerClass} {
+                  padding: 1.25rem;
+                }
+                
+                .${listClass} {
+                  grid-template-columns: 1fr;
+                }
+                
+                h1 {
+                  font-size: 2rem;
+                }
+              }
+              
+              @media (max-width: 480px) {
+                h1 {
+                  font-size: 1.75rem;
+                }
+                
+                .${mainContainerClass} {
+                  padding: 1rem;
+                }
+              }
+            </style>
             </head>
             <body>`);
 
-        const mainContainerClass: string = generateCssClass();
-        const headerClass: string = generateCssClass();
-        const contentClass: string = generateCssClass();
-        const navClass: string = generateCssClass();
-        const listClass: string = generateCssClass();
-        const listItemClass: string = generateCssClass();
+
 
         push(`<div class="${mainContainerClass}">
                 <header class="${headerClass}">
